@@ -1,0 +1,313 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gyanna's Birthday Invite</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            font-family: 'Poppins', sans-serif;
+            color: white;
+            background: #000;
+            overflow: hidden;
+            position: relative;
+        }
+
+
+        #bgVideo {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -2;
+        }
+
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: -1;
+        }
+
+
+        .content {
+            padding: 25px;
+            border-radius: 20px;
+            max-width: 90%;
+            position: relative;
+            z-index: 2;
+            opacity: 0;
+            transform: scale(0.8);
+            animation: boomIn 1.5s ease-out forwards;
+            animation-delay: 0.5s;
+        }
+
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 900;
+            font-size: 2.8rem;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #ff6ec4, #7873f5, #ff6ec4);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(255, 110, 196, 0.7);
+            animation: shimmer 3s ease-in-out infinite;
+            letter-spacing: 2px;
+            line-height: 1.2;
+        }
+
+
+        .details {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border: 2px solid rgba(255, 110, 196, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+
+        .details p {
+            font-size: 1.1rem;
+            margin: 10px 0;
+            font-weight: 600;
+        }
+
+
+        .highlight {
+            color: #ff6ec4;
+            font-weight: 700;
+        }
+
+
+        .ticket-btn {
+            display: inline-block;
+            margin: 25px 0 15px 0;
+            padding: 15px 30px;
+            background: linear-gradient(45deg, #ff6ec4, #7873f5);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.2rem;
+            box-shadow: 0 0 25px rgba(255, 110, 196, 0.5);
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+
+        .ticket-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 35px rgba(255, 110, 196, 0.8);
+        }
+
+
+        .surprise {
+            margin-top: 25px;
+            font-size: 1rem;
+            color: #ffd700;
+            opacity: 0;
+            animation: goldReveal 1.5s ease forwards;
+            animation-delay: 6s;
+            font-style: italic;
+            background: rgba(255, 215, 0, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 3px solid #ffd700;
+        }
+
+
+        .sparkle {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #fff;
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0;
+            z-index: 10;
+        }
+
+
+        @keyframes boomIn {
+            0% { opacity: 0; transform: scale(0.8); }
+            70% { opacity: 1; transform: scale(1.05); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+
+        @keyframes shimmer {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+
+        @keyframes goldReveal {
+            from { opacity: 0; transform: translateY(20px) scale(0.9); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+
+        @keyframes sparkleBurst {
+            0% { opacity: 1; transform: translate(0, 0) scale(1); }
+            100% { opacity: 0; transform: translate(var(--tx), var(--ty)) scale(0); }
+        }
+
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2rem; }
+            .details p { font-size: 1rem; }
+            .ticket-btn { padding: 12px 25px; font-size: 1.1rem; }
+            .content { padding: 20px; max-width: 95%; }
+        }
+
+
+        @media (max-width: 480px) {
+            h1 { font-size: 1.7rem; }
+            .details { padding: 15px; }
+        }
+    </style>
+</head>
+<body>
+    <video id="bgVideo" autoplay muted loop>
+        <source src="video/videoplayback.mp4" type="video/mp4">
+    </video>
+   
+    <div class="overlay"></div>
+
+
+    <div class="content">
+        <h1>YOU'RE INVITED TO<br>GYANNA'S BIRTHDAY!</h1>
+       
+        <div class="details">
+            <p>🎉 <span class="highlight">Urban Air Adventure</span> 🎉</p>
+            <p>📅 Saturday · October 25th</p>
+            <p>⏰ 3:00 PM</p>
+            <p>📍 4422 2nd Ave, Brooklyn, NY 11232</p>
+            <p>✨ Join Gyanna on her special day! ✨</p>
+        </div>
+
+
+        <a href="https://www.urbanair.com/new-york-brooklyn/" target="_blank" class="ticket-btn">
+            GET YOUR TICKETS NOW!
+        </a>
+
+
+        <div class="surprise">
+            🤫 Shhh... Secret 2nd Party!<br>
+            Cake Cutting + Food + Music<br>
+            Sunday · October 26th · 4:00 PM 🎂
+        </div>
+    </div>
+
+
+    <audio id="bgMusic" autoplay loop>
+        <source src="audio/Huntrix - How It's Done (Lyrics) _ K-Pop Demon Hunters.mp3" type="audio/mp3">
+    </audio>
+
+
+    <script>
+        // Simple and clean - no complicated code
+        const video = document.getElementById('bgVideo');
+        const audio = document.getElementById('bgMusic');
+
+
+        // Set audio volume and play
+        audio.volume = 0.7;
+
+
+        // Video loop: 0:00 to 0:26
+        video.addEventListener('timeupdate', function() {
+            if (this.currentTime >= 26) {
+                this.currentTime = 0;
+            }
+        });
+
+
+        // Music loop: 1:18 to 1:43
+        audio.addEventListener('timeupdate', function() {
+            if (this.currentTime >= 103) {
+                this.currentTime = 78;
+            }
+        });
+
+
+        // Start at 1:18 when loaded
+        audio.addEventListener('loadeddata', function() {
+            this.currentTime = 78;
+        });
+
+
+        // Sparkles function
+        function createSparkles() {
+            const sparkleCount = 50;
+            const colors = ['#ff6ec4', '#7873f5', '#ffffff', '#ffd700', '#ffa500'];
+           
+            for (let i = 0; i < sparkleCount; i++) {
+                const sparkle = document.createElement('div');
+                sparkle.className = 'sparkle';
+               
+                const angle = Math.random() * Math.PI * 2;
+                const distance = 50 + Math.random() * 200;
+                const tx = Math.cos(angle) * distance;
+                const ty = Math.sin(angle) * distance;
+               
+                sparkle.style.cssText = `
+                    left: 50%;
+                    top: 50%;
+                    background: ${colors[Math.floor(Math.random() * colors.length)]};
+                    --tx: ${tx}px;
+                    --ty: ${ty}px;
+                    animation: sparkleBurst ${0.8 + Math.random() * 0.7}s ease-out forwards;
+                    animation-delay: ${Math.random() * 0.3}s;
+                `;
+               
+                document.body.appendChild(sparkle);
+               
+                setTimeout(() => {
+                    if (sparkle.parentNode) {
+                        sparkle.parentNode.removeChild(sparkle);
+                    }
+                }, 1500);
+            }
+        }
+
+
+        // Create sparkles on load
+        setTimeout(createSparkles, 300);
+
+
+        // Occasional sparkles
+        setInterval(() => {
+            if (Math.random() > 0.7) createSparkles();
+        }, 3000);
+    </script>
+</body>
+</html>
+
