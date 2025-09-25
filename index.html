@@ -222,7 +222,7 @@
         <div class="surprise">
             🤫 Shhh... Secret 2nd Party!<br>
             Cake Cutting + Food + Music<br>
-            Sunday · October 26th · 4:00 PM 🎂
+            Sunday · October 26th · 4:00 PM *Brianna's Home*🎂
         </div>
     </div>
 
@@ -232,15 +232,65 @@
     </audio>
 
 
+    <style>
+        /* Play overlay styles */
+        #playOverlay {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0,0,0,0.45);
+            z-index: 9999;
+            backdrop-filter: blur(4px);
+        }
+
+        #playButton {
+            background: linear-gradient(45deg,#ff6ec4,#7873f5);
+            color: #fff;
+            border: none;
+            padding: 18px 28px;
+            border-radius: 999px;
+            font-weight: 800;
+            font-size: 1.1rem;
+            cursor: pointer;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.6);
+        }
+    </style>
+
+    <div id="playOverlay" aria-hidden="true" style="display:none;">
+        <button id="playButton">Play Music</button>
+    </div>
+
     <script>
-        // Simple and clean - no complicated code
+        // Simple and clean - enhanced autoplay handling
         const video = document.getElementById('bgVideo');
         const audio = document.getElementById('bgMusic');
+        const playOverlay = document.getElementById('playOverlay');
+        const playButton = document.getElementById('playButton');
 
-
-        // Set audio volume and play
+        // Set audio volume
         audio.volume = 0.7;
 
+        // Helper: try to play both video and audio, return promise
+        function tryAutoplay() {
+            const plays = [];
+            try {
+                plays.push(video.play());
+            } catch (e) {
+                // ignore
+            }
+            try {
+                plays.push(audio.play());
+            } catch (e) {
+                // ignore
+            }
+
+            // If browser returns promises, wait for them and detect rejection
+            return Promise.all(plays.map(p => (p && typeof p.then === 'function') ? p : Promise.resolve()))
+                .then(() => ({success: true}))
+                .catch(() => ({success: false}));
+        }
 
         // Video loop: 0:00 to 0:26
         video.addEventListener('timeupdate', function() {
@@ -249,7 +299,6 @@
             }
         });
 
-
         // Music loop: 1:18 to 1:43
         audio.addEventListener('timeupdate', function() {
             if (this.currentTime >= 103) {
@@ -257,14 +306,12 @@
             }
         });
 
-
         // Start at 1:18 when loaded
         audio.addEventListener('loadeddata', function() {
-            this.currentTime = 78;
+            try { this.currentTime = 78; } catch (e) { /* ignore */ }
         });
 
-
-        // Sparkles function
+        // Sparkles function (unchanged)
         function createSparkles() {
             const sparkleCount = 50;
             const colors = ['#ff6ec4', '#7873f5', '#ffffff', '#ffd700', '#ffa500'];
@@ -298,15 +345,46 @@
             }
         }
 
-
         // Create sparkles on load
         setTimeout(createSparkles, 300);
-
 
         // Occasional sparkles
         setInterval(() => {
             if (Math.random() > 0.7) createSparkles();
         }, 3000);
+
+        // Try autoplay on load. If blocked by browser, show Play overlay for first interaction.
+        window.addEventListener('load', () => {
+            // Attempt autoplay after a tiny delay so media elements can initialize
+            setTimeout(() => {
+                tryAutoplay().then(result => {
+                    if (!result.success) {
+                        // Show overlay so user can explicitly start audio/video
+                        playOverlay.style.display = 'flex';
+                        playOverlay.setAttribute('aria-hidden', 'false');
+                    } else {
+                        // Hide overlay if it was visible
+                        playOverlay.style.display = 'none';
+                        playOverlay.setAttribute('aria-hidden', 'true');
+                    }
+                });
+            }, 150);
+        });
+
+        // Play when user clicks overlay or anywhere (first interaction)
+        function userStart() {
+            tryAutoplay().then(() => {
+                playOverlay.style.display = 'none';
+                playOverlay.setAttribute('aria-hidden', 'true');
+            });
+            // remove listeners after first use
+            document.removeEventListener('click', userStart);
+            document.removeEventListener('touchstart', userStart);
+        }
+
+        playButton.addEventListener('click', userStart);
+        document.addEventListener('click', userStart, { once: true });
+        document.addEventListener('touchstart', userStart, { once: true });
     </script>
 </body>
 </html>
